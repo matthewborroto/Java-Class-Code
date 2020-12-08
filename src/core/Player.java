@@ -1,0 +1,134 @@
+package core;
+
+import java.util.ArrayList;
+import javax.swing.JPanel;
+import userinterface.GameUi;
+
+public abstract class Player implements IPlayer
+{
+    // member variables
+    private String name;
+    private int tricks;
+    private int score;
+    private ArrayList<Card> hand;
+    private JPanel ui;
+    private GameUi gameUi;
+    private boolean acceptTrump;
+
+    
+    // abstract method from IPlayer
+    public abstract Card playCard();
+    public abstract void makeTrump();
+
+    public Player()
+    {
+        hand = new ArrayList();
+    }
+    
+    public void sortBySuit()
+    {    
+        
+        ArrayList<Card> sortedHand = new ArrayList<Card>();
+        
+        while (hand.size() > 0) 
+        {
+            int position = 0;  // Position of minimal card.
+            Card firstCard = hand.get(0);  // Minimal card.
+            
+            for (int i = 1; i < hand.size(); i++) 
+            {
+                Card nextCard = hand.get(i);
+                
+                if (nextCard.getSuit().getRank() < firstCard.getSuit().getRank() ||
+                   (nextCard.getSuit() == firstCard.getSuit() && 
+                    nextCard.getFace().getValue() < firstCard.getFace().getValue())) 
+                {
+                    position = i;
+                    firstCard = nextCard;
+                }
+            }
+            
+            hand.remove(position);
+            sortedHand.add(firstCard);
+        }
+        
+        hand = sortedHand;
+    }
+        
+    public void displayHand()
+    {
+        System.out.println("*************************");
+        System.out.println("Player " + name + " hand is ");
+        System.out.println("*************************");
+                
+        for(Card card : hand)
+        {
+            System.out.println(card.getFace() + " of " + card.getSuit());
+        }
+    }
+    
+    public void setUi(JPanel ui)
+    {
+        this.ui = ui;
+    }
+    
+    public void setUi(GameUi ui)
+    {
+        this.gameUi = ui;
+    }
+    
+    public JPanel getUi()
+    {
+        return ui;
+    }
+    
+    public boolean isAcceptTrump() 
+    {
+        return acceptTrump;
+    }
+
+    public void setAcceptTrump(boolean acceptTrump) 
+    {
+        this.acceptTrump = acceptTrump;
+    }
+    
+    public String getName() 
+    {
+        return name;
+    }
+
+    public void setName(String name) 
+    {
+        this.name = name;
+    }
+
+    public int getTricks() 
+    {
+        return tricks;
+    }
+
+    public void setTricks(int tricks) 
+    {
+        this.tricks = tricks;
+    }
+
+    public int getScore() 
+    {
+        return score;
+    }
+
+    public void setScore(int score) 
+    {
+        this.score = score;
+    }
+
+    public ArrayList<Card> getHand() 
+    {
+        return hand;
+    }
+
+    public void setHand(ArrayList<Card> hand) 
+    {
+        this.hand = hand;
+    }
+}
